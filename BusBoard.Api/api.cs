@@ -24,8 +24,15 @@ namespace BusBoard.Api
             request.Resource = "/postcodes/" + pcode;
             IRestResponse<PcodeResult> response = client.Execute<PcodeResult>(request);
             List<string> coordinates = new List<string>();
-            coordinates.Add(response.Data.result.latitude);
-            coordinates.Add(response.Data.result.longitude);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                coordinates.Add(response.Data.result.latitude);
+                coordinates.Add(response.Data.result.longitude);
+            }
+            else
+            {
+                coordinates.Add("error");
+            }
             return coordinates;
         }
 

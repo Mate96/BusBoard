@@ -12,6 +12,7 @@ namespace BusBoard.Api
         public string lineName { get; set; }
         public string destinationName { get; set; }
         public string towards { get; set; }
+        public string stationName { get; set; }
     }
 
     public class Postcode

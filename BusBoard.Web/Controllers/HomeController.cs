@@ -6,14 +6,15 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Net;
-
+using System.Web.Routing;
 
 namespace BusBoard.Web.Controllers
 {
   public class HomeController : Controller
   {
-    public ActionResult Index()
+    public ActionResult Index(bool error = false)
     {
+      ViewBag.Error = error;
       return View();
     }
 
@@ -26,22 +27,32 @@ namespace BusBoard.Web.Controllers
 
             var api = new api();
             List<string> coordinates = api.Pcode(selection.Postcode);
-            List<Stops> Stops = api.Stops(coordinates);
-
-            //display the 5 next buses stopping at the number of stops requested/found
-            List<List<Bus>> stopInfo = new List<List<Bus>>();           
-            for (var i = 0; i < 2; i++)
+            if (coordinates[0] == "error")
             {
-                var resultNames = api.Bus(Stops, i)
-                    .OrderBy(b => b.expectedArrival).ThenBy(b => b.expectedArrival).ToList()    //order buses in from soonest to arrive to latest to arrive
-                    //.Select(b => "Expected arrival: " + b.expectedArrival.Hour + ":" + b.expectedArrival.Minute + "\n" + "Line: " + b.lineName + "\n" + "Destination: " + b.destinationName + "\n" + "Towards: " + b.towards + "\n \n")      //transform to an IEnumerable of strings
-                    .Take(5);       //select first 5 buses
-
-                stopInfo.Add(resultNames.ToList());
+                RouteValueDictionary err = new RouteValueDictionary();
+                bool error = true;
+                err.Add("error", error);
+                return RedirectToAction("Index", err);
             }
+            else
+            {
+                List<Stops> Stops = api.Stops(coordinates);
+                
+                //display the 5 next buses stopping at the number of stops requested/found
+                List<List<Bus>> stopInfo = new List<List<Bus>>();
+                for (var i = 0; i < 2; i++)
+                {
+                    var resultNames = api.Bus(Stops, i)
+                        .OrderBy(b => b.expectedArrival).ThenBy(b => b.expectedArrival).ToList()    //order buses in from soonest to arrive to latest to arrive
+                                                                                                    //.Select(b => "Expected arrival: " + b.expectedArrival.Hour + ":" + b.expectedArrival.Minute + "\n" + "Line: " + b.lineName + "\n" + "Destination: " + b.destinationName + "\n" + "Towards: " + b.towards + "\n \n")      //transform to an IEnumerable of strings
+                        .Take(5);       //select first 5 buses
 
-            var info = new BusInfo(selection.Postcode, stopInfo);
-            return View(info);
+                    stopInfo.Add(resultNames.ToList());
+                }
+
+                var info = new BusInfo(selection.Postcode, stopInfo);
+                return View(info);
+            }
     }
 
     public ActionResult About()

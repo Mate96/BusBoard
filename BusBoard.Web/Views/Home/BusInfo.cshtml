@@ -1,18 +1,21 @@
-﻿@using BusBoard.Api; 
-
-@{
+﻿@{
 	ViewBag.Title = "Bus Information";
 }
 
 <h2>BusInfo</h2>
 
-<div class="row col-md-12"">
+<div class="row col-md-12">
     <p>You entered postcode @Model.PostCode</p>
+
+    <div class="lead">
+        <p class="col-md-6"><ins>@Model.Stop1[0].stationName</ins></p>
+        <p class="col-md-6"><ins>@Model.Stop2[0].stationName</ins></p>
+    </div>
 
 	<ol class="col-md-6">
 		@{
-			for (int i = 0; i < Model.Stop1.Count; i++)
-			{
+            for (int i = 0; i < Model.Stop1.Count; i++)
+            {
 				<li>
 					<B>Expected arrival:</B>
 					@Model.Stop1[i].expectedArrival.ToShortTimeString()<br />
@@ -29,8 +32,8 @@
 
 	<ol class="col-md-6">
 		@{
-			for (int i = 0; i < Model.Stop2.Count; i++)
-			{
+            for (int i = 0; i < Model.Stop2.Count; i++)
+            {
 				<li>
                     <B>Expected arrival:</B>
                     @Model.Stop2[i].expectedArrival.ToShortTimeString()<br />
@@ -46,3 +49,9 @@
 	</ol>
 
 </div>
+
+<script>
+    setTimeout(function () {
+        window.location.reload(1);
+    }, 30000);
+</script>

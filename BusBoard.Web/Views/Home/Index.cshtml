@@ -5,7 +5,19 @@
 
 <div class="jumbotron">
     <h1>BusBoard</h1>
-    <p class="lead">For all your bus info needs. Enter a postcode below and click enter to see bus times for that location.</p>
+   
+            @if (ViewBag.Error)
+            {
+                <p class="lead">
+                    Postcode invalid. Try again.
+                </p>
+            }
+            else
+            {
+                <p class="lead">
+                    For all your bus info needs. Enter a postcode below and click enter to see bus times for that location.
+                </p>
+            }
 </div>
 
 <div class="row">

@@ -51,7 +51,7 @@ namespace BusBoard.ConsoleApp
             {
                 var resultNames = api.Bus(Stops, i)
                     .OrderBy(b => b.expectedArrival).ThenBy(b => b.expectedArrival).ToList()    //order buses in from soonest to arrive to latest to arrive
-                    .Select(b => "Expected arrival: " + b.expectedArrival. + ":" + b.expectedArrival.Minute + "\n" + "Line: " + b.lineName + "\n" + "Destination: " + b.destinationName + "\n" + "Towards: " + b.towards + "\n \n")      //transform to a list of strings
+                    .Select(b => "Expected arrival: " + b.expectedArrival.Hour + ":" + b.expectedArrival.Minute + "\n" + "Line: " + b.lineName + "\n" + "Destination: " + b.destinationName + "\n" + "Towards: " + b.towards + "\n \n")      //transform to a list of strings
                     .Take(5);       //select first 5 buses
 
                 Console.WriteLine("\n" + string.Concat(resultNames));       //transform list to 1 string then display it
