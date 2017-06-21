@@ -1,10 +1,48 @@
-﻿@model BusBoard.Web.ViewModels.BusInfo
+﻿@using BusBoard.Api; 
+
 @{
-  ViewBag.Title = "Bus Information";
+	ViewBag.Title = "Bus Information";
 }
 
 <h2>BusInfo</h2>
 
-<div class="row">
+<div class="row col-md-12"">
     <p>You entered postcode @Model.PostCode</p>
+
+	<ol class="col-md-6">
+		@{
+			for (int i = 0; i < Model.Stop1.Count; i++)
+			{
+				<li>
+					<B>Expected arrival:</B>
+					@Model.Stop1[i].expectedArrival.ToShortTimeString()<br />
+                    <B>Line:</B>
+					@Model.Stop1[i].lineName<br />
+                    <B>Destination:</B>
+                    @Model.Stop1[i].destinationName<br />
+                    <B>Towards:</B>
+                    @Model.Stop1[i].towards<br /><br />
+				</li>
+			}
+		}
+	</ol>
+
+	<ol class="col-md-6">
+		@{
+			for (int i = 0; i < Model.Stop2.Count; i++)
+			{
+				<li>
+                    <B>Expected arrival:</B>
+                    @Model.Stop2[i].expectedArrival.ToShortTimeString()<br />
+                    <B>Line:</B>
+                    @Model.Stop2[i].lineName<br />
+                    <B>Destination:</B>
+                    @Model.Stop2[i].destinationName<br />
+                    <B>Towards:</B>
+                    @Model.Stop2[i].towards<br /><br />
+                </li>
+			}
+		 }
+	</ol>
+
 </div>
